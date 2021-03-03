@@ -1,4 +1,8 @@
-<?php get_header();?>
+<?php
+/*
+Template Name: Blog Template
+*/
+ get_header();?>
 
 <div class="header_gutter"></div>
 

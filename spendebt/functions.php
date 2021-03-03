@@ -1,5 +1,5 @@
 <?php
-if(! defined('ABSPATH')) exit;
+
 
 require_once('wp_bootstrap_navwalker.php');
 require_once('widget/social-icons-widget.php');
@@ -8,19 +8,19 @@ if(class_exists('Attachments')){
 }
 
 function spendebt_setup(){
-    //Translation
+    
     load_theme_textdomain( 'spendebt', get_template_directory( ).'/languages');
     
-    //Post Thumbnails for Post and Pages
-    add_theme_support('post_thumbnails');
+    
+    add_theme_support( 'post-thumbnails' );
     add_image_size( 'post_thumb', 737, 452, true);
-    add_image_size( 'blog_post', 555, 272, true);
+    add_image_size( 'blog_post', 382, 199, true);
     add_image_size('logo', 180, 90, true);
     add_image_size( 'icon', 58, 58, true);
     add_image_size('banner_image', 578, 982, true);
     add_image_size( 'how_works_image', 800, 450, true);
 
-    //wp_nav_menus initialization
+    
     register_nav_menus( array(
         'menu' => esc_html__('Primary Menu', 'spendebt'),
         'footer' => esc_html__('Footer Menu', 'spendebt'),
@@ -32,9 +32,9 @@ function spendebt_setup(){
 
 add_action('after_setup_theme','spendebt_setup');
 
-//Enqueue Scripts and Styles
+
 function spendebt_scripts(){
-    //Enqueue Style
+
     wp_enqueue_style('typekit-cs', '//use.typekit.net/sos3edy.css', array(), false, 'all');
     wp_enqueue_style('plugins-cs', get_template_directory_uri() . '/css/plugins.css', array(), date("ymd-Gis", filemtime( get_template_directory() . '/css/plugins.css' )), 'all');
 	wp_enqueue_style( 'spendebt-style', get_stylesheet_uri(), array(), date("ymd-Gis", filemtime( get_stylesheet_directory())));
@@ -48,28 +48,26 @@ function spendebt_scripts(){
 
 add_action('wp_enqueue_scripts', 'spendebt_scripts');
 
-//Allow SVG and DOC file details
+
 
 function spendebt_custom_mime_types( $mimes ) {
-	// New allowed mime types.
+	
 	$mimes['svg'] = 'image/svg+xml';
 	$mimes['svgz'] = 'image/svg+xml';
 	$mimes['doc'] = 'application/msword';
 	 
-	// Optional. Remove a mime type.
-	//unset( $mimes['exe'] );
+
 	 
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'spendebt_custom_mime_types' );
 
 
-/*** ACF OPTIONS PAGE */
+
 if( function_exists('acf_add_options_page') ) {
 	acf_add_options_page();
 }
 
-/*** Reorder dashboard menu */
 function aventus_reorder_admin_menu( $__return_true ) {
 	return array(
 		'index.php',                 	// Dashboard
@@ -133,5 +131,27 @@ function spendebt_footer_widgets(){
             ) );
 }
 add_action('widgets_init','spendebt_footer_widgets');
+
+function search_form_spendebt($form){
+    
+    $homedir = home_url("/our-blog/?s=");
+    $btn_label = __("Search", "spendebt");
+
+
+    $newform = <<<FORM
+    <form action="{$homedir}" class="search-form">
+        <div class="form-group">
+            <input type="search" placeholder="Search the Blog" value="{$btn_label}">
+            <button type="submit"><i class="icon-search"></i></button>
+        </div>
+    </form>
+    
+    FORM;
+    return $newform;
+}
+add_filter("get_search_form", "search_form_spendebt")
+
+
+
 
 ?>

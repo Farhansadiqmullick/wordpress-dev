@@ -133,16 +133,7 @@ get_header();?>
 											while( have_rows('plan_text_list') ) : the_row();?>
 											
 											<li><?php the_sub_field('plan_text_repeat'); ?></li>
-												<!-- if($fields_repeat):
-													echo '<li>' .$fields_repeat. '</li>';
-												endif;
-												echo '</ul>';
-												var_dump($fields_repeat);
-											endwhile; endif; 
-										
-											 $sub_field_3 = get_sub_field('plan_text_repeat'); 
-
-											 echo $sub_field_3; -->
+												
 											<?php	
 												 endwhile; ?>
 											 
@@ -362,50 +353,42 @@ get_header();?>
 					<div class="row">
 						<div class="col-12">
 							<div class="entry-title text-center">
-								<h2 class="title">Company News & Updates</h2>
-								<h4 class="font-weight-normal">The Latest Happenings Inside the Spendebt Family</h4>
+								<h2 class="title"><?php echo the_field('feature_blog_title');?></h2>
+								<h4 class="font-weight-normal"><?php echo the_field('feature_blog_content');?></h4>
 							</div>
 						</div>
 					</div>
-
-					<div class="row lr-9">
-						<div class="col-lg-4 col-sm-6">
-							<article class="blog-post">
-								<div class="media">
-									<a href="blog-details.html"><img src="../images/blog-post-1.jpg" class="img-fluid" alt=""></a>
-								</div>
-
-								<div class="text">
-									<a href="blog-details.html"><h5 class="title">St. Louis tech startup showing consumers how to pay off debts when spending money</h5></a>
-								</div>
-							</article>
-						</div><!-- /blog-post -->
-
-						<div class="col-lg-4 col-sm-6">
-							<article class="blog-post">
-								<div class="media">
-									<a href="blog-details.html"><img src="../images/blog-post-4.jpg" class="img-fluid" alt=""></a>
-								</div>
-
-								<div class="text">
-									<a href="blog-details.html"><h5 class="title">The Bourbon Friday Show with Kiley Summers from Spendebt</h5></a>
-								</div>
-							</article>
-						</div><!-- /blog-post -->
-						
-						<div class="col-lg-4 col-sm-6">
-							<article class="blog-post">
-								<div class="media">
-									<a href="blog-details.html"><img src="../images/blog-post-5.jpg" class="img-fluid" alt=""></a>
-								</div>
-
-								<div class="text">
-									<a href="blog-details.html"><h5 class="title">Startup masters 054: Spendebt App with Kiley Summers</h5></a>
-								</div>
-							</article>
-						</div><!-- /blog-post -->
-					</div>
+						<?php
+							$featured_posts = get_field('feature_blog');
+							if( $featured_posts ): ?>
+								<ul class="features list-unstyled">
+									<li>
+										<div class="row lr-9">
+										<?php foreach( $featured_posts as $post ):setup_postdata($post); ?>
+											<div class="col-lg-4 col-sm-6">
+												<article class="blog-post">
+													<div class="media">
+														<a href="<?php the_permalink();?>">
+															<?php the_post_thumbnail( 'blog_post', array( 'class' => 'img-fluid' ) ) ;?> 
+														</a>
+													</div>
+																
+													<div class="text">
+														<a href="<?php the_permalink();?>"><h5 class="title"><?php the_title(); ?></h5></a>
+													</div>
+												</article>
+											</div>
+											<?php endforeach; ?>
+										</div>
+									</li>
+								</ul>
+								<?php 
+									
+									wp_reset_postdata(); ?>
+								<?php endif; ?>
+					
 				</div>
+				
 			</section><!-- /latest-news -->
 
 		</div><!-- /primary -->
