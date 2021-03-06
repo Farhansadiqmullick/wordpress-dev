@@ -25,7 +25,7 @@
 				<div class="logo">
 				 	<a class="navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 					 		<?php
-								$logo = get_field( 'logo', 'options' );
+								$logo = get_field( 'logo', 'spendebt' );
 
 								if ( $logo ) 
 								{
@@ -69,7 +69,7 @@
 					  	<div class="logo">
 						 	<a class="navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 								<?php
-									$logo = get_field( 'logo', 'options' );
+									$logo = get_field( 'logo', 'spendebt' );
 
 									if ( $logo ) 
 									{
@@ -113,4 +113,10 @@
 			  	</div><!-- /container -->
 			</nav><!--/ Navbar -->
 		</header>
-		<div class="header_gutter"></div>
+		<?php if((get_the_ID())){
+			var_dump(get_the_ID());
+		}else{
+			wp_die();
+		}?>
+		<div class="header_gutter">
+		</div>

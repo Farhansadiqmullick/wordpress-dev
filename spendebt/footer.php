@@ -5,11 +5,19 @@
 					<div class="col-12 text-center">
 						<div class="footer-logo">
 							<a href="index.html" class="img-responsive" alt="%s">
-								<?php 
-									$footer_image = get_field('footer_logo');
-									$footer_image_details = wp_get_attachment_image_src($footer_image, 'meduim');
-									echo "<img src='". esc_url($footer_image_details[0])."'>";?>
-								
+									<?php
+										$logo = get_field( 'logo', 'spendebt' );
+
+										if ( $logo ) 
+										{
+											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
+										}
+										else
+										{
+											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri( 'images/logo.png' ) ), get_bloginfo( 'name') );
+										}
+									?>
+									
 							</a>
 						</div>
 
@@ -31,7 +39,7 @@
 						<ul class="footer-menu list-inline">
 							<li><a href="#" target="_blank"><span class="icon-play-store"></span></a></li>
 							<li><a href="#" target="_blank"><span class="icon-apple"></span></a></li>
-							<li class="btn-menu"><a href="#">Login</a></li>
+							<li class="btn-menu"><a href="#"><?php _e('Login', 'spendebt')?></a></li>
 						</ul>
 
 						<div class="subscribe-newsletter text-center">
@@ -39,7 +47,17 @@
 								dynamic_sidebar('footer-sidebar-1');
 								}
 								?></h4>
-							<img src="../images/footer-subscribe-form.png" class="img-fluid" alt="">
+									<form text-center action="#">
+										<span style="background-color:white">
+											
+											<input type="text"class="col-sm-4" placeholder="Email address" name="mail" required>
+											
+										</span>
+
+										<span class="col-sm-2">
+											<input type="submit" class="btn animated fadeInLeft delay-1s" value="Subscribe">
+										</span>
+									</form>
 						</div>
 
 						

@@ -6,6 +6,7 @@ require_once('widget/social-icons-widget.php');
 if(class_exists('Attachments')){
     require_once('lib/attachments.php');
 }
+require_once('widget/category-posts.php');
 
 function spendebt_setup(){
     
@@ -38,12 +39,18 @@ function spendebt_scripts(){
     wp_enqueue_style('typekit-cs', '//use.typekit.net/sos3edy.css', array(), false, 'all');
     wp_enqueue_style('plugins-cs', get_template_directory_uri() . '/css/plugins.css', array(), date("ymd-Gis", filemtime( get_template_directory() . '/css/plugins.css' )), 'all');
 	wp_enqueue_style( 'spendebt-style', get_stylesheet_uri(), array(), date("ymd-Gis", filemtime( get_stylesheet_directory())));
+    wp_enqueue_style( 'tiny-slider-style', '//cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css', array(), false, 'all');
     
     //Enqueue Scripts
     wp_enqueue_script('jquery');
 	wp_enqueue_script('plugins', get_template_directory_uri() . '/js/plugins.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/plugins.js' )), true);
 	wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/scripts.js' )), true);
-
+    wp_enqueue_script('tiny-slider-js', '//cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js', null, time(), true); 
+    wp_enqueue_script('tns-scripts', get_template_directory_uri() . '/js/tns-scripts.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/tns-scripts.js' )), true);
+    
+    $ajaxurl = admin_url( 'admin-ajax.php');
+    wp_enqueue_script('spendebt-contact-js', get_template_directory_uri() . '/js/contact.js', array('jquery'), date("ymd-Gis",filemtime( get_template_directory() . '/js/contact.js' )), true);
+    wp_localize_script( 'spendebt-contact-js', 'spendebturl', array('ajaxurl' => $ajaxurl) );
 }
 
 add_action('wp_enqueue_scripts', 'spendebt_scripts');
@@ -129,12 +136,32 @@ function spendebt_footer_widgets(){
             'before_title' => '',
             'after_title' => '',
             ) );
-}
+        register_sidebar( array(
+            'name' => 'Contact Widget',
+            'id' => 'contact-widget',
+            'class' => 'contact-widget',
+            'description' => 'Appears in the contact widget',
+            'before_widget' => '<ul class="social-media social-color large list-inline">',
+            'after_widget' => '</ul>',
+            'before_title' => '<h4 class="social-title">',
+            'after_title' => '</h4>',
+            ) );
+        register_sidebar( array(
+            'name' => 'Cateogry Posts',
+            'id' => 'category-posts',
+            'class' => 'category-posts',
+            'description' => 'Appears in the Widgetized Area',
+            'before_widget' => '<div class="text">',
+            'after_widget' => '</div>',
+            'before_title' => '<h4 class="widget-title separator">',
+            'after_title' => '</h4>',
+            ) );
+        }
 add_action('widgets_init','spendebt_footer_widgets');
 
 function search_form_spendebt($form){
     
-    $homedir = home_url("/our-blog/?s=");
+    $homedir = home_url("/our-blog");
     $btn_label = __("Search", "spendebt");
 
 
@@ -149,9 +176,168 @@ function search_form_spendebt($form){
     FORM;
     return $newform;
 }
-add_filter("get_search_form", "search_form_spendebt")
+add_filter("get_search_form", "search_form_spendebt");
+
+function spendebt_postsbycategory() {
+    // the query
+    $the_query = new WP_Query( array( 'category_name' => 'Blog', 'posts_per_page' => 3 ) ); 
+     
+    // The Loop
+    if ( $the_query->have_posts() ) {
+        $string .= '<ul class="postsbycategory widget_recent_entries">';
+        while ( $the_query->have_posts() ) {
+            $the_query->the_post();
+                if ( has_post_thumbnail() ) {
+                $string .= '<li>';
+                $string .= '<a href="' . get_the_permalink() .'" rel="bookmark">' . get_the_post_thumbnail($post_id, array( 50, 50) ) . get_the_title() .'</a></li>';
+                } else { 
+                // if no featured image is found
+                $string .= '<li><a href="' . get_the_permalink() .'" rel="bookmark">' . get_the_title() .'</a></li>';
+                }
+                }
+        } else {
+        // no posts found
+    }
+    $string .= '</ul>';
+     
+    return $string;
+     
+    /* Restore original Post Data */
+    wp_reset_postdata();
+    }
+    // Add a shortcode
+    add_shortcode('categoryposts', 'spendebt_postsbycategory');
+     
+    // Enable shortcodes in text widgets
+    add_filter('widget_text', 'do_shortcode');
+
+function spendebt_contact_email(){
+    $fname = isset($_POST['fname']) ? $_POST['fname']:'';
+    $lname = isset($_POST['lname']) ? $_POST['lname']:'';
+    $email = isset($_POST['email']) ? $_POST['email']:'';
+    $subject = isset($_POST['subject']) ? $_POST['subject']:'';
+    $message = isset($_POST['message']) ? $_POST['message']:'';
+
+    $_message = sprintf("%s\nFname: %s\nLname: %s\nEmail: %s\nSubject: %s",$message,$fname,$lname,$email,$subject);
+    $admin_email = get_option('admin_email');
+    
+    wp_mail($admin_email, __('You have a message from Spendent Website', 'spendebt'),$_message,"From: {$admin_email}\r\n");
+    die('Mail Sent Successfully');
+}
+add_action('wp_ajax_contact', 'spendebt_contact_email');
+add_action('wp_ajax_nopriv_contact', 'spendebt_contact_email');
 
 
+
+function the_breadcrumb()
+{
+    $showOnHome = 0; // 1 - show breadcrumbs on the homepage, 0 - don't show
+    $delimiter = '&raquo;'; // delimiter between crumbs
+    $home = 'Home'; // text for the 'Home' link
+    $showCurrent = 1; // 1 - show current post/page title in breadcrumbs, 0 - don't show
+    $before = '<span class="current">'; // tag before the current crumb
+    $after = '</span>'; // tag after the current crumb
+
+    global $post;
+    $homeLink = get_bloginfo('url');
+    if (is_home() || is_front_page()) {
+        if ($showOnHome == 1) {
+            echo '<div id="crumbs"><a href="' . $homeLink . '">' . $home . '</a></div>';
+        }
+    } else {
+        echo '<div id="crumbs"><a href="' . $homeLink . '">' . $home . '</a> ' . $delimiter . ' ';
+        if (is_category()) {
+            $thisCat = get_category(get_query_var('cat'), false);
+            if ($thisCat->parent != 0) {
+                echo get_category_parents($thisCat->parent, true, ' ' . $delimiter . ' ');
+            }
+            echo $before . 'Archive by category "' . single_cat_title('', false) . '"' . $after;
+        } elseif (is_search()) {
+            echo $before . 'Search results for "' . get_search_query() . '"' . $after;
+        } elseif (is_day()) {
+            echo '<a href="' . get_year_link(get_the_time('Y')) . '">' . get_the_time('Y') . '</a> ' . $delimiter . ' ';
+            echo '<a href="' . get_month_link(get_the_time('Y'), get_the_time('m')) . '">' . get_the_time('F') . '</a> ' . $delimiter . ' ';
+            echo $before . get_the_time('d') . $after;
+        } elseif (is_month()) {
+            echo '<a href="' . get_year_link(get_the_time('Y')) . '">' . get_the_time('Y') . '</a> ' . $delimiter . ' ';
+            echo $before . get_the_time('F') . $after;
+        } elseif (is_year()) {
+            echo $before . get_the_time('Y') . $after;
+        } elseif (is_single() && !is_attachment()) {
+            if (get_post_type() != 'post') {
+                $post_type = get_post_type_object(get_post_type());
+                $slug = $post_type->rewrite;
+                echo '<a href="' . $homeLink . '/' . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a>';
+                if ($showCurrent == 1) {
+                    echo ' ' . $delimiter . ' ' . $before . get_the_title() . $after;
+                }
+            } else {
+                $cat = get_the_category();
+                $cat = $cat[0];
+                $cats = get_category_parents($cat, true, ' ' . $delimiter . ' ');
+                if ($showCurrent == 0) {
+                    $cats = preg_replace("#^(.+)\s$delimiter\s$#", "$1", $cats);
+                }
+                echo $cats;
+                if ($showCurrent == 1) {
+                    echo $before . get_the_title() . $after;
+                }
+            }
+        } elseif (!is_single() && !is_page() && get_post_type() != 'post' && !is_404()) {
+            $post_type = get_post_type_object(get_post_type());
+            echo $before . $post_type->labels->singular_name . $after;
+        } elseif (is_attachment()) {
+            $parent = get_post($post->post_parent);
+            $cat = get_the_category($parent->ID);
+            $cat = $cat[0];
+            echo get_category_parents($cat, true, ' ' . $delimiter . ' ');
+            echo '<a href="' . get_permalink($parent) . '">' . $parent->post_title . '</a>';
+            if ($showCurrent == 1) {
+                echo ' ' . $delimiter . ' ' . $before . get_the_title() . $after;
+            }
+        } elseif (is_page() && !$post->post_parent) {
+            if ($showCurrent == 1) {
+                echo $before . get_the_title() . $after;
+            }
+        } elseif (is_page() && $post->post_parent) {
+            $parent_id  = $post->post_parent;
+            $breadcrumbs = array();
+            while ($parent_id) {
+                $page = get_page($parent_id);
+                $breadcrumbs[] = '<a href="' . get_permalink($page->ID) . '">' . get_the_title($page->ID) . '</a>';
+                $parent_id  = $page->post_parent;
+            }
+            $breadcrumbs = array_reverse($breadcrumbs);
+            for ($i = 0; $i < count($breadcrumbs); $i++) {
+                echo $breadcrumbs[$i];
+                if ($i != count($breadcrumbs)-1) {
+                    echo ' ' . $delimiter . ' ';
+                }
+            }
+            if ($showCurrent == 1) {
+                echo ' ' . $delimiter . ' ' . $before . get_the_title() . $after;
+            }
+        } elseif (is_tag()) {
+            echo $before . 'Posts tagged "' . single_tag_title('', false) . '"' . $after;
+        } elseif (is_author()) {
+            global $author;
+            $userdata = get_userdata($author);
+            echo $before . 'Articles posted by ' . $userdata->display_name . $after;
+        } elseif (is_404()) {
+            echo $before . 'Error 404' . $after;
+        }
+        if (get_query_var('paged')) {
+            if (is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author()) {
+                echo ' (';
+            }
+            echo __('Page') . ' ' . get_query_var('paged');
+            if (is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author()) {
+                echo ')';
+            }
+        }
+        echo '</div>';
+    }
+} // end the_breadcrumb()
 
 
 ?>

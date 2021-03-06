@@ -9,31 +9,7 @@ function spendebt_attachments($attachments){
            'type'      => 'text',
            'label'     => __( 'Title', 'spendebt' ),
        ),
-       array(
-        'name'      => 'caption',
-        'type'      => 'textarea',
-        'label'     => __( 'Caption', 'spendebt' ),
-    ),
-        array(
-        'name'      => 'author-name',
-        'type'      => 'text',
-        'label'     => __( 'Author Name', 'spendebt' ),
-    ),
-    array(
-        'name'      => 'author-place',
-        'type'      => 'textarea',
-        'label'     => __( 'Author Place', 'spendebt' ),
-    ),
-    array(
-        'name'      => 'author-image',
-        'type'      => 'wysiwyg',
-        'label'     => __( 'Author Image', 'spendebt' ),
-    ),
-    array(
-        'name'      => 'author-video',
-        'type'      => 'wysiwyg',
-        'label'     => __( 'Author Video', 'spendebt' ),
-    ),
+ 
     );
 
     $args = array(

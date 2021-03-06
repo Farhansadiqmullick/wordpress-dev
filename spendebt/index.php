@@ -1,47 +1,42 @@
-<?php get_header();?>
+<?php get_header();
+ // $post_id = false;
 
-<div class="header_gutter"></div>
+	// if( is_home() ) :
+	// 	$post_id = 212;
+?>
 
-		<section class="featured-blog-posts">
-			<div class="fbp-slider-controls d-flex align-items-center">
-				<div class="container">
-					<div class="col-12">
-						<div class="fbp-slider-control"></div>	
-					</div>
-				</div>
-			</div>
-			
-		
-			<div class="fbp-slider">
-				<?php
-					if(have_rows('blog_slider')) :
-						while(have_rows('blog_slider')) : the_row();
-
-						
-						if( the_sub_field('slider_image') ) :
-						$slide_image = "<img src='".the_sub_field('slider_image')."' />"; ?>
-
-					<?php endif; ?>
-					
-				
-				<div class="slider-item d-flex align-items-center justify-content-between coverbg" style="background-image: url(<?php echo $slide_image ? esc_url( $slider['image']['url'] ) : get_theme_file_uri( 'images/blog-post-1.jpg' ); ?>);">
+			<div class="header_gutter"></div>
+			<section class="featured-blog-posts">
+				<div class="fbp-slider-controls d-flex align-items-center">
 					<div class="container">
-						<div class="row">
-							<div class="col-12">
-								<article class="blog-post text-center">
-									<a href="#"><span class="date" data-animation="fadeInUp" data-delay="0.6s"><?php the_sub_field('slider_date');?></span></a>
-									<a href="blog-details.html"><h1 class="title" data-animation="fadeInUp" data-delay="0.8s"><?php the_sub_field('slider_title');?></h1></a>
-									<a  class="btn btn-primary" data-animation="fadeInUp" data-delay="1s" href="<?php echo esc_attr( the_permalink() ); ?>"><?php _e('Read More', 'spendent');?></a>
-								</article>
-							</div>
-						</div>	
+						<div class="col-12">
+							<div class="fbp-slider-control"></div>
+						</div>
 					</div>
 				</div>
-				<?php endwhile;
-					endif; 
-					?>
 				
-			</div>
+				<div class="fbp-slider">
+					<?php 
+						$attachments = new Attachments('slider'); ?>
+							<?php if( $attachments->exist() ) : ?>
+							<?php while( $attachments->get() ) : ?>
+								<div class="slider-item d-flex align-items-center justify-content-between coverbg" style="background-image: url(<?php echo $attachments->src( 'full' ); ?>);">
+									<div class="container">
+										<div class="row">
+											<div class="col-12">
+												<?php echo $attachments->field( 'title' ); ?>
+											</div>
+										</div>	
+									</div>
+								</div>
+								<?php endwhile;?>
+								<?php endif;?>			
+				</div>
+							
+											
+					
+			
+	
 
 
 		</section><!-- /featured-blog-posts -->
@@ -110,22 +105,19 @@
 											</div>
 										<?php endif;?>
 										</div><!-- /pagination -->
-											<?php $call = get_field('call_action_image');?>
+											<?php $call = get_field('call_action_image');
+											if( $call ) {
+													echo wp_get_attachment_image( $call, $size );
+												} ?>
+
 										<div class="call-action">
-											<div class="content coverbg" style="background-image: url(<?php echo $call['image'] ? esc_url( $call['image']['url'] ) : get_theme_file_uri( 'images/call-action.jpg' ); ?>);">
-												<div class="entry-title">
-													<h2 class="title white"><?php get_field('call_action_text');?></h2>
-												</div>
-											<?php		
-												$call_button = get_field('call_button');
-												if( $call_button ): 
-												$call_button_url = $call_button['url'];
-												$call_button_title = $call_button['title'];
-												$call_button_target = $call_button['target'] ? $call_button['target'] : '_blank';
+											<div class="content coverbg" style="background-image: url(<?php echo esc_attr($call) ? esc_url( $call) : get_theme_file_uri( 'images/call-action.jpg' ); ?>);">
+											<div class="entry-title">
+											<h2 class="title white"><?php _e('Ready to get serious about paying off debt?', 'spendebt')?></h2>
+										</div>
+										
+												<a href="#" class="btn btn-primary"><?php _e('Sign up', 'spendebt')?></a>
 											
-											?>
-                                   			<a class="btn btn-primary" href="<?php echo esc_url( $call_button_url ); ?>" target="<?php echo esc_attr( $call_button_target ); ?>"><?php echo esc_html( $call_button_title ); ?></a>
-											<?php endif;?>	
 											</div>
 										</div><!-- /call-action -->
 									</main>
@@ -136,65 +128,28 @@
 						<div class="col-lg-3 col-md-12">
 							<aside class="sidebar" data-sticky_column>
 								<div class="widget widget-featured">
-									<h4 class="widget-title separator">Featured</h4>
-
 									<div class="row lr-9">
 										<div class="col-lg-12 col-md-6 col-sm-6">
 											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-1.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">St. Louis Tech Startup Showing Consumers How To Pay Off Debts When Spending Money</h5></a>
-												</div>
+												<?php if(is_active_sidebar('category-posts')){
+													dynamic_sidebar('category-posts');
+														
+												}?>
 											</article><!-- /blog-post -->
-										</div>
 
-										<div class="col-lg-12 col-md-6 col-sm-6">
-											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-4.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">The Bourbon Friday Show With Kiley Summers From Spendebt</h5></a>
-												</div>
-											</article><!-- /blog-post -->
-										</div>
-
-										<div class="col-lg-12 col-md-6 col-sm-6">
-											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-5.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">Startup Masters 054: Spendebt App With Kiley Summers</h5></a>
-												</div>
-											</article><!-- /blog-post -->
-										</div>
+											
+												
+										</div><!--widget-->
 									</div>
-								</div><!-- /widget -->
+								</div>
+										
 
 								<div class="widget widget-store">
-									<h4 class="widget-title separator">Get the App</h4>
+									<h4 class="widget-title separator"><?php _e('Get the App','spendebt')?></h4>
 
 									<ul class="store list-unstyled lr-9 d-flex flex-wrap align-items-center">
-										<li class="col-lg-12 col-sm-6"><a href="#" class="btn icon-apple" target="_blank">Get it on the App Store</a></li>
-										<li class="col-lg-12 col-sm-6"><a href="#" class="btn btn-base icon-play-store" target="_blank">Get it on Google Play</a></li>
+										<li class="col-lg-12 col-sm-6"><a href="#" class="btn icon-apple" target="_blank"><?php _e('Get it on the App Store','spendebt')?></a></li>
+										<li class="col-lg-12 col-sm-6"><a href="#" class="btn btn-base icon-play-store" target="_blank"><?php _e('Get it on the Google Play','spendebt')?></a></li>
 									</ul>
 								</div><!-- /widget -->
 							</aside>
@@ -206,4 +161,5 @@
 
 		</div><!-- /primary -->
 
-		<?php get_footer();?>
+		<?php
+		 get_footer();?>

@@ -42,7 +42,7 @@ get_header();?>
 				</div>
 			</div>
 		</section><!-- /banner -->
-<?php endif;?>
+	<?php endif;?>
 		<div id="primary" class="content-area">
 
 			<section class="home-how-works">
@@ -59,7 +59,7 @@ get_header();?>
 								<a href="<?php the_field('how_works_video'); ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
 							<?php
 								$works_image = get_field('how_works_image');
-								$works_image_details = wp_get_attachment_image_src($works_image, 'how_works_image');
+								$works_image_details = wp_get_attachment_image_src($works_image, 'logo');
 								echo "<img src='". esc_url($works_image_details[0])."'>";
 							?>
 								<h5 class="note"><span><?php echo esc_html(get_field('how_works_video_span'));?></span> Runtime: <?php echo esc_html(get_field('how_works_video_span_duration'));?></h5>
