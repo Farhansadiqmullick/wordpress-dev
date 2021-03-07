@@ -1,5 +1,5 @@
 <?php
-
+show_admin_bar( false );
 
 require_once('wp_bootstrap_navwalker.php');
 require_once('widget/social-icons-widget.php');
@@ -40,7 +40,7 @@ function spendebt_scripts(){
     wp_enqueue_style('plugins-cs', get_template_directory_uri() . '/css/plugins.css', array(), date("ymd-Gis", filemtime( get_template_directory() . '/css/plugins.css' )), 'all');
 	wp_enqueue_style( 'spendebt-style', get_stylesheet_uri(), array(), date("ymd-Gis", filemtime( get_stylesheet_directory())));
     wp_enqueue_style( 'tiny-slider-style', '//cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css', array(), false, 'all');
-    
+    wp_enqueue_style( 'style-css', get_stylesheet_uri(), null, date("ymd-Gis", filemtime( get_stylesheet_directory())));
     //Enqueue Scripts
     wp_enqueue_script('jquery');
 	wp_enqueue_script('plugins', get_template_directory_uri() . '/js/plugins.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/plugins.js' )), true);
@@ -73,6 +73,32 @@ add_filter( 'upload_mimes', 'spendebt_custom_mime_types' );
 
 if( function_exists('acf_add_options_page') ) {
 	acf_add_options_page();
+}
+
+if( function_exists('acf_add_options_page') ) {
+	
+	acf_add_options_page(array(
+		'page_title' 	=> 'Theme General Settings',
+		'menu_title'	=> 'Theme Settings',
+		'menu_slug' 	=> 'theme-general-settings',
+		'capability'	=> 'edit_posts',
+		'redirect'		=> false
+	));
+	
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Theme Header Settings',
+		'menu_title'	=> 'Header',
+        'parent_slug'	=> 'theme-general-settings',
+        'redirect'      => 'false'
+	));
+	
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Theme Footer Settings',
+		'menu_title'	=> 'Footer',
+        'parent_slug'	=> 'theme-general-settings',
+        'redirect'      => 'false'
+	));
+	
 }
 
 function aventus_reorder_admin_menu( $__return_true ) {

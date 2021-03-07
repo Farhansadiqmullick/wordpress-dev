@@ -7,8 +7,8 @@ Template Name: Discover
     get_header();
     ?>
 	<div class="header_gutter"></div>
-   <?php $banner = get_field( 'banner' ); ?>
-		<section class="page-banner d-flex align-items-center" style="background-image: url(<?php echo $banner['image'] ? esc_url( $banner['image']['url'] ) : get_theme_file_uri( 'images/page-banner-discover.png' ); ?>);">
+   <?php $banner = get_field('banner_image'); ?>
+		<section class="page-banner d-flex align-items-center" style="background-image: url(<?php echo esc_url($banner['url']) ? esc_url( $banner['url'] ) : get_theme_file_uri( 'images/page-banner-discover.png' ); ?>);">
 			<div class="container">
 				<div class="row">
 					<div class="col-12">
@@ -63,10 +63,10 @@ Template Name: Discover
                         <div class="container">
                                 <div class="row align-items-center">
                                     <div class="col-sm-8">
-                                        <div class="content" data-number="<?php for($i=0; $i<1; $i++){echo $i++;} ;?>">
+                                        <div class="content" data-number="<?php for($i=0; $i<3; $i++){echo $i;} ;?>">
                                             <div class="icon float-left">
                                                 <i class="icon-edit"></i>
-                                                <span class="number"><?php for($i=0; $i<1; $i++){echo $i++;} ;?></span>
+                                                <span class="number"><?php for($i=0; $i<3; $i++){echo $i;} ;?></span>
                                             </div>
 
                                             <div class="text">

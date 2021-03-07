@@ -3,23 +3,18 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-12 text-center">
+					
 						<div class="footer-logo">
-							<a href="index.html" class="img-responsive" alt="%s">
-									<?php
-										$logo = get_field( 'logo', 'spendebt' );
-
-										if ( $logo ) 
-										{
-											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
-										}
-										else
-										{
-											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri( 'images/logo.png' ) ), get_bloginfo( 'name') );
-										}
-									?>
-									
-							</a>
+							<?php 
+								$footer_image = get_field('footer_logo', 'option');
+								if( !empty( $footer_image ) ): ?>
+									<a href="<?php home_url('/')?>">
+										<img src="<?php echo esc_url($footer_image['url']); ?>" alt="<?php echo esc_attr($footer_image['alt']); ?>" />
+									</a>
+								<?php endif; ?>
 						</div>
+								
+
 
 						
 							<?php
@@ -37,19 +32,27 @@
 						</ul>
 
 						<ul class="footer-menu list-inline">
-							<li><a href="#" target="_blank"><span class="icon-play-store"></span></a></li>
-							<li><a href="#" target="_blank"><span class="icon-apple"></span></a></li>
-							<li class="btn-menu"><a href="#"><?php _e('Login', 'spendebt')?></a></li>
+							<li><a href="https://play.google.com/store/apps/details?id=com.app.spendebt" target="_blank"><span class="icon-play-store"></span></a></li>
+							<li><a href="https://apps.apple.com/us/app/spendebt/id1422084789" target="_blank"><span class="icon-apple"></span></a></li>
+							<li class="btn-menu"><a href="//localhost/spendebt/wp-admin"><?php _e('Login', 'spendebt')?></a></li>
 						</ul>
-
+						<?php if( have_rows('footer_newsletter', 'option') ): ?>
 						<div class="subscribe-newsletter text-center">
-							<h4 class="title"><?php if(is_active_sidebar('footer-sidebar-1')){
-								dynamic_sidebar('footer-sidebar-1');
-								}
-								?></h4>
+							<ul class="list-unstyled features">
+								<?php while( have_rows('footer_newsletter', 'option') ): the_row(); ?>
+										<h4 class="title">
+
+
+											<li><?php the_sub_field('footer_newsletter_text'); ?></li>
+
+											<?php endwhile; ?>
+
+										</h4>
+									</ul>
+								<?php endif; ?>
 									<form text-center action="#">
 										<span style="background-color:white">
-											
+											<input type="text"class="col-sm-2" placeholder="First Name" name="fname" required>
 											<input type="text"class="col-sm-4" placeholder="Email address" name="mail" required>
 											
 										</span>

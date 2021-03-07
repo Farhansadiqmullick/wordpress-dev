@@ -47,72 +47,68 @@ get_header();?>
 
 			<section class="home-how-works">
 				<div class="money rellax animated fadeInUp delay-2s"><img src="<?php echo get_template_directory_uri() . '/images/money.svg'?>" class="svg img-fluid" alt="%s"></div>
-				<div class="container">
-					<div class="row">
-						<div class="col-12">
-							<div class="entry-title text-center">
-								<h2 class="title"><?php echo get_field('how_works_title')?></h2>
-								<h4 class="font-weight-normal"><?php echo get_field('how_works_description')?></h4>
-							</div>
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<div class="entry-title text-center">
+									<h2 class="title"><?php echo get_field('how_works_title')?></h2>
+									<h4 class="font-weight-normal"><?php echo get_field('how_works_description')?></h4>
+								</div>
 
-							<div class="media with-note radius">
-								<a href="<?php the_field('how_works_video'); ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
-							<?php
-								$works_image = get_field('how_works_image');
-								$works_image_details = wp_get_attachment_image_src($works_image, 'logo');
-								echo "<img src='". esc_url($works_image_details[0])."'>";
-							?>
-								<h5 class="note"><span><?php echo esc_html(get_field('how_works_video_span'));?></span> Runtime: <?php echo esc_html(get_field('how_works_video_span_duration'));?></h5>
-								</a>
+								<div class="media with-note radius">
+									<a href="<?php the_field('how_works_video'); ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
+									<?php
+										$works_image = get_field('how_works_image');
+										$works_image_details = wp_get_attachment_image_src($works_image, 'logo');
+										echo "<img src='". esc_url($works_image_details[0])."'>";
+									?>
+										<h5 class="note"><span><?php echo esc_html(get_field('how_works_video_span'));?></span> Runtime: <?php echo esc_html(get_field('how_works_video_span_duration'));?></h5>
+									</a>
+								</div>
 							</div>
 						</div>
-					</div>
-					
-
-    					
-					<div class="row eq-height">
-						<?php
-
 						
-							if( have_rows('how_works_repeat') ):
 
-						
-							while( have_rows('how_works_repeat') ) : the_row();
-						?>
-							<div class="col-md-4 col-sm-12">
-								<div class="how-works-item text-center">
-								
-									<div class="icon-wrap">
-										<div class="icon">
-											<?php
-											
-												$icon_image = get_sub_field('repeat_icon');
-												$icon_image_details = wp_get_attachment_image_src($icon_image, 'icon');
-												echo "<img src='". esc_url($icon_image_details[0])."'>";
-											?>
-										</div>
-									</div>
-
+							
+						<div class="row eq-height">
+							<?php
+							if( have_rows('how_works_repeat') ): ?>
+									<?php while( have_rows('how_works_repeat') ) : the_row();
+									?>
+								<div class="col-md-4 col-sm-12">
+									<div class="how-works-item text-center">
 									
-									<div class="text">
-										<h4 class="title"><?php echo get_sub_field('repeat_title');?></h4>
-										<span class="step"><?php echo get_sub_field('repeat_steps');?></span>
-										<p><?php echo get_sub_field('repeat_description');?></p>
+											<div class="icon-wrap">
+												<div class="icon">
+												<?php
+														$icon = get_sub_field( 'repeat_icon', 'spendebt' );
+
+														if ( $icon ) 
+														{
+															printf( '<img src="%s" class="icon-edit" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
+														}
+														?>
+
+													
+												
+												</div>
+											</div>
+											<div class="text">
+												<h4 class="title"><?php echo get_sub_field('repeat_title');?></h4>
+												<span class="step"><?php echo get_sub_field('repeat_steps');?></span>
+												<p><?php echo get_sub_field('repeat_description');?></p>
+											</div>
 									</div>
 								</div>
+								<?php endwhile;	?>
+							<?php endif; ?>
+
 							
-							</div><!-- /how-works-item -->
-						<?php 
+						</div>
+								
+					</div><!-- /how-works-item -->
+									
 						
-							endwhile;
-
-							endif;
-						?>
-
-					</div>
-						
-					
-				</div>
 			</section><!-- /home-how-works -->
 
 			<section class="pricing">
@@ -284,10 +280,11 @@ get_header();?>
 															<i class="icon-quote-left"></i>
 															<i class="icon-quote-right"></i>
 														</div>
+														<?php $author_video = get_sub_field('slider_author_video')?>
 														<div class="quote">
 																<p><?php echo get_sub_field( 'slider_caption' ); ?></p>
 														</div>
-														<a href="<?php echo get_sub_field('slider_author_video')?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
+														<a href="<?php echo $author_video;?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
 																<?php 
 																$author_image = get_sub_field('slider_author_image');
 																if( $author_image ) {

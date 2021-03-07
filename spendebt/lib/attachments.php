@@ -8,6 +8,7 @@ function spendebt_attachments($attachments){
            'name'      => 'title',
            'type'      => 'text',
            'label'     => __( 'Title', 'spendebt' ),
+           'default'   => 'title',
        ),
  
     );

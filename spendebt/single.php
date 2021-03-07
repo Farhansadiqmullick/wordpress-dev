@@ -89,98 +89,55 @@ get_header();?>
 									</div>
 								
 
-                            <?php
-                                    $call = get_field('call_action_image');?>
-                                <div class="call-action">
-                                    <div class="content coverbg" style="background-image: url(<?php echo $call['image'] ? esc_url( $call['image']['url'] ) : get_theme_file_uri( 'images/call-action.jpg' ); ?>);">
-                                        <div class="entry-title">
-                                            <h2 class="title white"><?php echo get_field('call_action_text');?></h2>
-                                        </div>
-                                    <?php	
-                                            
-                                        $call_button = get_field('call_button');
-                                        if( $call_button ): 
-                                        $call_button_url = $call_button['url'];
-                                        $call_button_title = $call_button['title'];
-                                        $call_button_target = $call_button['target'] ? $call_button['target'] : '_blank';
-                                    
-                                    ?>
-                                    <a class="btn btn-primary" href="<?php echo esc_url( $call_button_url ); ?>" target="<?php echo esc_attr( $call_button_target ); ?>"><?php echo esc_html( $call_button_title ); ?></a>
-                                    <?php endif;?>	
-                                    </div>
-                                </div><!-- /call-action -->
+									<?php $call = get_field('call_action_image');
+											if( $call ) {
+													echo wp_get_attachment_image( $call, $size );
+												} ?>
+
+										<div class="call-action">
+											<div class="content coverbg" style="background-image: url(<?php echo get_theme_file_uri( 'images/call-action.jpg' ); ?>);">
+												<div class="entry-title">
+														<h2 class="title white"><?php _e('Ready to get serious about paying off debt?', 'spendebt')?></h2>
+												</div>
+												
+														<a href="#" class="btn btn-primary"><?php _e('Sign up', 'spendebt')?></a>
+													
+											</div>
+										</div><!-- /call-action -->
 							</main>
 						</div>
 
 						<div class="col-lg-3 col-md-12">
 							<aside class="sidebar" data-sticky_column>
 								<div class="widget widget-featured">
-									<h4 class="widget-title separator">Featured</h4>
-
 									<div class="row lr-9">
 										<div class="col-lg-12 col-md-6 col-sm-6">
 											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-1.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">St. Louis Tech Startup Showing Consumers How To Pay Off Debts When Spending Money</h5></a>
-												</div>
+												<?php if(is_active_sidebar('category-posts')){
+													dynamic_sidebar('category-posts');
+														
+												}?>
 											</article><!-- /blog-post -->
-										</div>
-
-										<div class="col-lg-12 col-md-6 col-sm-6">
-											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-4.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">The Bourbon Friday Show With Kiley Summers From Spendebt</h5></a>
-												</div>
-											</article><!-- /blog-post -->
-										</div>
-
-										<div class="col-lg-12 col-md-6 col-sm-6">
-											<article class="blog-post">
-												<div class="media">
-													<a href="blog-details.html">
-														<img src="../images/blog-post-5.jpg" class="img-fluid" alt="">
-													</a>
-												</div>
-
-												<div class="text">
-													<a href="#"><span class="date text-uppercase">JANUARY 12, 2019</span></a>
-
-													<a href="blog-details.html"><h5 class="title">Startup Masters 054: Spendebt App With Kiley Summers</h5></a>
-												</div>
-											</article><!-- /blog-post -->
-										</div>
+										</div><!--widget-->
 									</div>
 								</div><!-- /widget -->
 
 								<div class="widget widget-store">
-									<h4 class="widget-title separator">Get the App</h4>
+									<h4 class="widget-title separator"><?php _e('Get the App','spendebt')?></h4>
 
 									<ul class="store list-unstyled lr-9 d-flex flex-wrap align-items-center">
-										<li class="col-lg-12 col-sm-6"><a href="#" class="btn icon-apple" target="_blank">Get it on the App Store</a></li>
-										<li class="col-lg-12 col-sm-6"><a href="#" class="btn btn-base icon-play-store" target="_blank">Get it on Google Play</a></li>
+										<li class="col-lg-12 col-sm-6"><a href="#" class="btn icon-apple" target="_blank"><?php _e('Get it on the App Store','spendebt')?></a></li>
+										<li class="col-lg-12 col-sm-6"><a href="#" class="btn btn-base icon-play-store" target="_blank"><?php _e('Get it on the Google Play','spendebt')?></a></li>
 									</ul>
 								</div><!-- /widget -->
 							</aside>
 						</div>
 					</div>
+			
 				</div>
 			</section><!-- /blog-page -->
 
 		</div><!-- /primary -->
-<?php get_footer();?>
+
+		<?php
+		 get_footer();?>

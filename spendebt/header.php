@@ -24,17 +24,21 @@
 			<div class="navbar-header d-flex align-items-center justify-content-between">
 				<div class="logo">
 				 	<a class="navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-					 		<?php
-								$logo = get_field( 'logo', 'spendebt' );
+							 <?php
+								 if(have_rows('logo', 'option')) :
+									 while(have_rows('logo', 'option')) : the_row() ;
+										$logo = get_field('logo_image', 'option');
 
-								if ( $logo ) 
-								{
-									printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
-								}
-								else
-								{
-									printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri( 'images/logo.png' ) ), get_bloginfo( 'name') );
-								}
+										if ( $logo ) 
+										{
+											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
+										}
+										else
+										{
+											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri( 'images/logo.png' ) ), get_bloginfo( 'name') );
+										}
+								endwhile;
+							endif;
 							?>
 				 	</a>
 				</div>
@@ -69,7 +73,7 @@
 					  	<div class="logo">
 						 	<a class="navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 								<?php
-									$logo = get_field( 'logo', 'spendebt' );
+									$logo = get_field( 'logo');
 
 									if ( $logo ) 
 									{
@@ -98,9 +102,9 @@
 			                ));
 						?>
 						<ul class="navbar-nav navbar-right ml-auto">
-							<li><a href="#"><span class="icon-play-store"></span></a></li>
-							<li><a href="#"><span class="icon-apple"></span></a></li>
-							<li class="btn-menu"><a href="#">Login</a></li>
+							<li><a href="https://play.google.com/store/apps/details?id=com.app.spendebt" target="_blank"><span class="icon-play-store"></span></a></li>
+							<li><a href="https://apps.apple.com/us/app/spendebt/id1422084789" target="_blank"><span class="icon-apple"></span></a></li>
+							<li class="btn-menu"><a href="//localhost/spendebt/wp-admin"><?php _e('Login', 'spendebt')?></a></li>
 							<li class="mobile-navbar-toggler d-xl-none d-lg-none">
 								<a href="#sidr" class="navbar-toggle">
 									<span class="icon-bar"></span>
@@ -113,10 +117,16 @@
 			  	</div><!-- /container -->
 			</nav><!--/ Navbar -->
 		</header>
-		<?php if((get_the_ID())){
-			var_dump(get_the_ID());
-		}else{
-			wp_die();
-		}?>
-		<div class="header_gutter">
-		</div>
+		
+		<div class="header_gutter"></div>
+		 <?php
+		 
+		 /*$post_id = false;
+ 
+			if( is_home() )
+			{
+				$post_id = 305; 
+			} ?>
+		<?php var_dump(get_the_ID()); 
+		 */
+		?> 

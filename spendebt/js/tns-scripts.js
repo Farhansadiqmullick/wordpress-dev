@@ -5,6 +5,7 @@ $(document).ready(function(){
             items: 3,
             slideBy: 'page',
             autoplay: true,
+            speed: 300,
             controls: true,
             
         // slideby: "page",
