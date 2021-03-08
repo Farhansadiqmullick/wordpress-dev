@@ -4,65 +4,91 @@ Template Name: Home
 */
 get_header();?>
 
-<?php if(is_front_page()) :?>	
+<?php $banner = get_field('banner');
+ ?>	
 <section class="banner">
 			<div class="container position-relative">
 				<div class="row">
 					<div class="col-12">
 						<div class="content">
 							<div class="entry-title">
-								<h1 class="title animated fadeInLeft"><?php echo the_field('banner_text');?></h1>
-							</div>
+								<?php
+								if ( $banner['title'] ) 
+								{
+									printf( '<h1 class="title animated fadeInLeft">%s</h1>', $banner['title'] );
+								}
+								else
+								{
+									printf( '<h1 class="title text-uppercase animated fadeInUp">%s</h1>', get_bloginfo('name') );
+								}
 
-							<p class="animated fadeInLeft delay-1s"><?php echo the_field('banner_description');?></p>
-
-							<div class="button-group d-flex align-items-center">
-							<?php 
+								if ( $banner['description'] ) 
+								{
+									printf( '<p class="animated fadeInLeft delay-1s">%s</p>', $banner['description'] );
+								}
+								else
+								{
+									printf( '<h4 class="sub-title text-uppercase animated fadeInUp delay-1s">%s</h4>', get_bloginfo( 'description' ) );
+								}
+								
+								?>
 							
-								$banner_button = get_field('banner_button');
-								if( $banner_button ): 
-									$banner_button_url = $banner_button['url'];
-									$banner_button_title = $banner_button['title'];
-									$banner_button_target = $banner_button['target'] ? $banner_button['target'] : '_blank';
-							?>
-									<a class="btn animated fadeInLeft delay-1s" href="<?php echo esc_url( $banner_button_url ); ?>" target="<?php echo esc_attr( $banner_button_target ); ?>"><?php echo esc_html( $banner_button_title ); ?></a>
-								<button class="scrollDown animated fadeInLeft delay-2s" data-space="80"><i class="icon-arrow-down"></i></button>
-								<?php endif;?>
+
+								<div class="button-group d-flex align-items-center">
+									<?php
+									$link = $banner['link'];
+									if( $link ): 
+										$link_url = $link['url'];
+										$link_title = $link['title'];
+										$link_target = $link['target'] ? $link['target'] : '_self';
+										?>
+										<a class="btn animated fadeInLeft delay-1s" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo esc_html( $link_title ); ?></a>
+									<?php endif; ?>
+									<button class="scrollDown animated fadeInLeft delay-2s" data-space="80"><i class="icon-arrow-down"></i></button>
+								
+								</div>
+									
 							</div>
 						</div>
 					</div>
-				</div>
 
 				<div class="background animated fadeInUp delay-1s">
 					<?php
 					$banner_image = get_field('banner_image');
-					$banner_image_details = wp_get_attachment_image_src($banner_image, 'banner_image');
-					echo "<img src='". esc_url($banner_image_details[0])."'>";
+					$size = 'large'; 
+						if( $banner_image ) {
+							echo wp_get_attachment_image( $banner_image, $size );
+						}
+					
 					?>
 				</div>
 			</div>
 		</section><!-- /banner -->
-	<?php endif;?>
+
 		<div id="primary" class="content-area">
 
 			<section class="home-how-works">
+				<?php $works = get_field('how_works')?>
 				<div class="money rellax animated fadeInUp delay-2s"><img src="<?php echo get_template_directory_uri() . '/images/money.svg'?>" class="svg img-fluid" alt="%s"></div>
 					<div class="container">
 						<div class="row">
 							<div class="col-12">
 								<div class="entry-title text-center">
-									<h2 class="title"><?php echo get_field('how_works_title')?></h2>
-									<h4 class="font-weight-normal"><?php echo get_field('how_works_description')?></h4>
+									<h2 class="title"><?php echo esc_html($works['title']);?></h2>
+									<h4 class="font-weight-normal"><?php echo esc_html($works['description']);?></h4>
 								</div>
-
+								<?php
+								 $video = $works['video'];
+								 
+								 //var_dump($video);?>
 								<div class="media with-note radius">
-									<a href="<?php the_field('how_works_video'); ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
+									<a href="<?php echo esc_attr( $video['link'] ) ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
 									<?php
-										$works_image = get_field('how_works_image');
-										$works_image_details = wp_get_attachment_image_src($works_image, 'logo');
+										$works_image = $works['image'];
+										$works_image_details = wp_get_attachment_image_src($works_image, 'large');
 										echo "<img src='". esc_url($works_image_details[0])."'>";
 									?>
-										<h5 class="note"><span><?php echo esc_html(get_field('how_works_video_span'));?></span> Runtime: <?php echo esc_html(get_field('how_works_video_span_duration'));?></h5>
+										<h5 class="note"><span><?php echo esc_html( $video['span']);?></span> <?php _e('Runtime:', 'spendebt')?> <?php echo esc_html( $video['duration']);?></h5>
 									</a>
 								</div>
 							</div>
@@ -74,37 +100,33 @@ get_header();?>
 							<?php
 							if( have_rows('how_works_repeat') ): ?>
 									<?php while( have_rows('how_works_repeat') ) : the_row();
+									
 									?>
 								<div class="col-md-4 col-sm-12">
 									<div class="how-works-item text-center">
-									
-											<div class="icon-wrap">
-												<div class="icon">
-												<?php
-														$icon = get_sub_field( 'repeat_icon', 'spendebt' );
-
-														if ( $icon ) 
-														{
-															printf( '<img src="%s" class="icon-edit" alt="%s">', esc_url( $logo['url'] ), $logo['alt'] );
-														}
-														?>
-
-													
-												
-												</div>
-											</div>
+										
+										<div class="icon-wrap">
+											<?php
+													$icon = get_sub_field_object('repeat_icon');
+													$value = $icon['value'];
+													?>
+													<div class="icon">
+													<i class=<?php echo $value;?>></i>
+													</div>
+										</div>	
 											<div class="text">
 												<h4 class="title"><?php echo get_sub_field('repeat_title');?></h4>
 												<span class="step"><?php echo get_sub_field('repeat_steps');?></span>
 												<p><?php echo get_sub_field('repeat_description');?></p>
 											</div>
+										
 									</div>
 								</div>
 								<?php endwhile;	?>
 							<?php endif; ?>
 
 							
-						</div>
+						
 								
 					</div><!-- /how-works-item -->
 									

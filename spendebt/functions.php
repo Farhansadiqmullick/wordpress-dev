@@ -45,8 +45,8 @@ function spendebt_scripts(){
     wp_enqueue_script('jquery');
 	wp_enqueue_script('plugins', get_template_directory_uri() . '/js/plugins.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/plugins.js' )), true);
 	wp_enqueue_script('scripts', get_template_directory_uri() . '/js/scripts.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/scripts.js' )), true);
-    wp_enqueue_script('tiny-slider-js', '//cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js', null, time(), true); 
-    wp_enqueue_script('tns-scripts', get_template_directory_uri() . '/js/tns-scripts.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/tns-scripts.js' )), true);
+   // wp_enqueue_script('tiny-slider-js', '//cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js', null, time(), true); 
+  //  wp_enqueue_script('tns-scripts', get_template_directory_uri() . '/js/tns-scripts.js', array(), date("ymd-Gis", filemtime( get_template_directory() . '/js/tns-scripts.js' )), true);
     
     $ajaxurl = admin_url( 'admin-ajax.php');
     wp_enqueue_script('spendebt-contact-js', get_template_directory_uri() . '/js/contact.js', array('jquery'), date("ymd-Gis",filemtime( get_template_directory() . '/js/contact.js' )), true);
