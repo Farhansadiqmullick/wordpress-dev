@@ -84,6 +84,43 @@ $spendent_section_description = $spendent_section->post_description;
 											<input type="submit" id="send-message" class="btn animated fadeInLeft delay-1s" name="submit" value="Submit">
 
 										</form>
+
+										<?php
+											$form = get_field('form');
+											var_dump($form);
+											if ( !empty( $form ) && array_filter( $form ) ): ?>
+												<div class="text=-center">
+											<div class="col-8">
+													<?php
+														if ( $form ) 
+														{
+															printf( '<h5 class="title text-uppercase">%s</h5>', $form['title'] );
+														}
+						
+														if ( $form['type'] ) 
+														{
+															echo '<div class="contact-form">';
+						
+															if ( $form['type'] == 'embed' && $form['embed_code'] ) 
+															{
+																printf('<div class="embed_code">%s</div>', $form['embed_code']);
+															}
+															elseif( $form['type'] == 'form' && $form['select_form'] )
+															{
+																echo do_shortcode('[gravityform id="'. $form['select_form']['id'] .'" title="false" description="false" tabindex="10" ajax="true"]');
+															} 
+						
+															echo '</div>';
+														}
+													?>
+												</div>
+											</div>
+											<?php endif; ?>
+
+
+
+
+
 									</div>
 								</div>
 							</div>

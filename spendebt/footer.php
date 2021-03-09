@@ -48,9 +48,9 @@
 											<?php endwhile; ?>
 
 										</h4>
-									</ul>
+							</ul>
 								<?php endif; ?>
-									<form text-center action="#">
+									<!-- <form text-center action="#">
 										<span style="background-color:white">
 											<input type="text"class="col-sm-2" placeholder="First Name" name="fname" required>
 											<input type="text"class="col-sm-4" placeholder="Email address" name="mail" required>
@@ -60,34 +60,87 @@
 										<span class="col-sm-2">
 											<input type="submit" class="btn animated fadeInLeft delay-1s" value="Subscribe">
 										</span>
-									</form>
-						</div>
+									</form> -->
 
-						
-							<?php if(is_active_sidebar('footer-social')){
-								dynamic_sidebar('footer-social');
+
+
+
+								
+								
+								
+								<?php
+
+								$form = get_field('form', 'option');
+								var_dump($form);
+								if ( !empty( $form ) && array_filter( $form ) ): ?>
+					<div class="col-lg-4 col-md-12">
+						<div class="why-choose__form">
+							<?php
+								if ( $form ) 
+								{
+									printf( '<h5 class="title text-uppercase">%s</h5>', $form['title'] );
 								}
+
+	                    		if ( $form['type'] ) 
+	                    		{
+	                    			echo '<div class="contact-form">';
+
+		                    		if ( $form['type'] == 'embed' && $form['embed_code'] ) 
+		                    		{
+		                    			printf('<div class="embed_code">%s</div>', $form['embed_code']);
+		                    		}
+		                    		elseif( $form['type'] == 'form' && $form['select_form'] )
+		                    		{
+		                    			echo do_shortcode('[gravityform id="'. $form['select_form']['id'] .'" title="false" description="false" tabindex="10" ajax="true"]');
+		                    		} 
+
+	                    			echo '</div>';
+	                    		}
+							?>
+						</div>
+					</div>
+					<?php endif; ?>
+									
+
+
+
+						</div>
+							
+								<div class="container">
+										<?php if(is_active_sidebar('footer-social')){
+											dynamic_sidebar('footer-social');
+											}
+										?>
+									</div>
+								</div>
+								
+								
+							
+						
+						<div class="container">
+							<div class="text-center">
+								<div class="copyright d-flex align-items-center justify-content-center">
+								<p><?php if(is_active_sidebar('footer-bar-1')){
+									dynamic_sidebar('footer-bar-1');
+									}
+									?></p>
+								
+								<?php
+								wp_nav_menu( array(
+									'menu'               => 'Footer Bottom',
+									'theme_location'     => 'footer-bottom',
+									'menu_class'         => 'footer-links list-inline',
+									'menu_id'            => 'footer-bottom',
+									'fallback_cb'        => 'wp_bootstrap_navwalker::fallback',
+									'walker'             => new wp_bootstrap_navwalker(),
+								));
 							?>
 						
-						
-						<div class="copyright d-flex align-items-center justify-content-center">
-							<p><?php if(is_active_sidebar('footer-bar-1')){
-								dynamic_sidebar('footer-bar-1');
-								}
-								?></p>
-							
-							<?php
-					  		wp_nav_menu( array(
-			                    'menu'               => 'Footer Bottom',
-			                    'theme_location'     => 'footer-bottom',
-			                    'menu_class'         => 'footer-links list-inline',
-			                    'menu_id'            => 'footer-bottom',
-			                    'fallback_cb'        => 'wp_bootstrap_navwalker::fallback',
-			                    'walker'             => new wp_bootstrap_navwalker(),
-			                ));
-						?>
-						
+									</div>
+							</div>
 						</div>
+						
+						
 					</div>
 				</div>
 			</div>

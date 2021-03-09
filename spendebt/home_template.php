@@ -135,18 +135,19 @@ get_header();?>
 
 			<section class="pricing">
 				<div class="container">
+				<?php $plan = get_field('plan');?>
 					<div class="row">
 						<div class="col-12">
 							<div class="content">
 								<div class="entry-title text-center">
-									<h2 class="title"><?php echo get_field('plan_title')?></h2>
-									<h4 class="font-weight-normal"><?php echo get_field('plan_description')?></h4>
+									<h2 class="title"><?php echo esc_html($plan['title']);?></h2>
+									<h4 class="font-weight-normal"><?php echo esc_html($plan['description']);?></h4>
 								</div>
 
-								<span class="price"><span class="counter"><?php echo get_field('plan_price')?></span></span>
+								<span class="price"><?php _e('$', 'spendebt')?><span class="counter"><?php echo esc_html($plan['price']);?></span></span>
 									
 										<ul class='features list-unstyled'>
-										<!-- $fields_repeat = get_sub_field('plan_text_repeat'); -->
+										
 										<?php
 											while( have_rows('plan_text_list') ) : the_row();?>
 											
@@ -165,87 +166,91 @@ get_header();?>
 
 			<section class="spendebt-difference">
 				<div class="container">
+					<?php $difference = get_field('hello');?>
+					
 					<div class="row">
 						<div class="col-12">
 							<div class="entry-title text-center">
-								<h2 class="title"><?php echo get_field('difference_title')?></h2>
-								<h4 class="font-weight-normal"><?php echo get_field('difference_subtitle')?></h4>
-								<p><?php echo get_field('difference_description')?></p>
+								<h2 class="title"><?php echo esc_html($difference['title'])?></h2>
+								<h4 class="font-weight-normal"><?php echo esc_html($difference['subtitle'])?></h4>
+								<p><?php echo esc_html($difference['description'])?></p>
 							</div>
 						</div>
 					</div>
 
 					<div class="row eq-height position-relative">
+						<?php $competition = $difference['items']; ?>
 						<div class="col-lg-6 col-md-12">
 							<div class="difference-item text-center">
-								<h2 class="title"><?php echo get_field('difference_item_title')?></h2>
-								<span class="sub-title"><?php echo get_field('difference_item_subtitle')?></span>
-								<p><?php echo get_field('difference_item_description')?></p>
+								<h2 class="title"><?php echo esc_html($competition['title'])?></h2>
+								<span class="sub-title"><?php echo esc_html($competition['subtitle'])?></span>
+								<p><?php echo esc_html($competition['description']) ?></p>
 
-								<span class="note"><?php echo get_field('difference_item_note')?></span>
+								<span class="note"><?php echo esc_html($competition['note'])?></span>
 								<?php
-
-									
 									if( have_rows('diff_repeater') ):
-
-								
-									while( have_rows('diff_repeater') ) : the_row();
+										while( have_rows('diff_repeater') ) : the_row();
 									?>
-
 								<ul class="list-unstyled">
 									<li>
 										<h4 class="label"><?php echo get_sub_field('diff_item_name');?></h4>
 										<h4 class="value"><span class="counter"><?php echo get_sub_field('diff_item_value');?></span> + <span class="after-value">$<span class="counter"><?php echo get_sub_field('diff_item_discount_value');?></span></span></h4>
 									</li>
-									
 								</ul>
 								<?php endwhile;
 									endif;	
 								?>
-								<div class="total d-flex align-items-center justify-content-center">
-									<h4 class="font-weight-normal"><?php echo get_field('diff_item_savings');?></h4>
-									<h2 class="value"><span class="counter"><?php echo get_field('diff_savings_price');?></span></h2>
+								<?php $save = get_field('savings')?>
+									<div class="total d-flex align-items-center justify-content-center">
+										<h4 class="font-weight-normal"><?php echo esc_html($save['title']);?></h4>
+										<h2 class="value"><span class="counter"><?php echo esc_html($save['price']);?></span></h2>
+									</div>
 								</div>
-								
 							</div>
-						</div>
+									
+
 
 						<div class="col-lg-6 col-md-12">
 							<div class="difference-item color text-center">
-								<h2 class="title"><?php
-								$logo = get_field('logo');
-								$logo_details = wp_get_attachment_image_src($logo, 'medium');
-								echo "<img src='". esc_url($logo_details[0])."'>";
-							?></h2>
-								<span class="sub-title"><?php echo get_field('diff_item_save_title')?></span>
-								<p><?php echo get_field('diff_item_save_description')?></p>
+								<h2 class="title">
+								<?php
+									$logo = get_field('logo_image', 'option');
+									$logo_img = get_sub_field('logo_image', 'option');
 
-								<span class="note"><?php echo get_field('diff_item_save_note')?></span>
+										if ( $logo_img ) 
+										{
+											printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( $logo_img ), $logo_img['alt'] );
+										}
+										else
+										{
+											 printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri( 'images/logo.png' ) ), get_bloginfo( 'name') );
+										}
+								
+								?>
+							</h2>
+								<span class="sub-title"><?php echo esc_html($competition['ssubtitle'])?></span>
+								<p><?php echo esc_html($competition['sdescription'])?></p>
+
+								<span class="note"><?php echo esc_html($competition['snote'])?></span>
 								
 								<?php
-
-									// Check rows exists.
-									if( have_rows('diff_repeater') ):
-
-									// Loop through rows.
+								if( have_rows('diff_repeater') ):
 									while( have_rows('diff_repeater') ) : the_row();
 									?>
-
-
-										<ul class="list-unstyled">
+									<ul class="list-unstyled">
 											<li>
 												<h4 class="label"><?php echo get_sub_field('diff_item_name');?></h4>
 												<h4 class="value"><span class="counter"><?php echo get_sub_field('diff_item_value');?></span> + <span class="after-value">$<span class="counter"><?php echo get_sub_field('diff_item_discount_value');?></span></span></h4>
 											</li>
 											
-										</ul>
+									</ul>
 								<?php endwhile;
 									endif;	
 								?>
-
+								
 								<div class="total d-flex align-items-center justify-content-center">
-									<h4 class="font-weight-normal"><?php echo get_field('diff_item_savings_title')?></h4>
-									<h2 class="value"><span class="counter"><?php echo get_field('diff_item_savings_large_price')?></span></h2>
+									<h4 class="font-weight-normal"><?php echo esc_html($save['stitle']);?></h4>
+									<h2 class="value"><span class="counter"><?php echo esc_html($save['sprice']);?></span></h2>
 								</div>
 							</div>
 						</div>
@@ -255,21 +260,22 @@ get_header();?>
 
 			<section class="sign-up">
 				<div class="container">
+				<?php $about = get_field('about');?>
 					<div class="row">
 						<div class="col-12">
 							<div class="entry-title">
-								<h2 class="title"><?php echo get_field('home_about_title')?></h2>
+								<h2 class="title"><?php echo esc_html($about['title']);?></h2>
 								<?php 
 								
-									$sign_up = get_field('sign_up_button');
-									if( $sign_up ): 
-										$sign_up_url = $sign_up['url'];
-										$sign_up_title = $sign_up['title'];
-										$sign_up_target = $sign_up['target'] ? $sign_up['target'] : '_blank';
 									
-								?>
-								<a class="btn" href="<?php echo esc_url( $sign_up_url ); ?>" target="<?php echo esc_attr( $sign_up_target ); ?>"><?php echo esc_html( $sign_up_title ); ?></a>
-								<?php endif; ?>
+									$link = $about['button'];
+									if( $link ): 
+										$link_url = $link['url'];
+										$link_title = $link['title'];
+										$link_target = $link['target'] ? $link['target'] : '_self';
+										?>
+										<a class="btn animated fadeInLeft delay-1s" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo esc_html( $link_title ); ?></a>
+									<?php endif; ?>
 							</div>
 						</div>
 					</div>
