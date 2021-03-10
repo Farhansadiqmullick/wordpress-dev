@@ -71,10 +71,12 @@
 								<?php
 
 								$form = get_field('form', 'option');
-								var_dump($form);
+							
+
+								
 								if ( !empty( $form ) && array_filter( $form ) ): ?>
-					<div class="col-lg-4 col-md-12">
-						<div class="why-choose__form">
+						<div class="col-lg-4 col-md-12">
+							<div class="why-choose__form">
 							<?php
 								if ( $form ) 
 								{
@@ -97,9 +99,9 @@
 	                    			echo '</div>';
 	                    		}
 							?>
+							</div>
 						</div>
-					</div>
-					<?php endif; ?>
+						<?php endif; ?>
 									
 
 

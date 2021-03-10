@@ -9,11 +9,12 @@ get_header();
 		<div class="header_gutter"></div>
 
 		<section class="page-header page-header-about d-flex align-items-center">
+			<?php $about = get_field('banner');?>
 			<div class="container">
 				<div class="row">
 					<div class="col-12">
 						<div class="entry-title">
-							<h1 class="title spendebt"><?php echo the_field('banner_title');?></h1>
+							<h1 class="title spendebt"><?php echo esc_html($about['title'])?></h1>
 						</div>
 					</div>
 				</div>
@@ -21,16 +22,10 @@ get_header();
 
 			<div class="background rellax">
 				<?php
-						$banner_image = get_field('banners_image');
+						$banner_image = $about['banner_image'];
 						$banner_image_details = wp_get_attachment_image_src($banner_image, 'large');
-
-					if(the_field($banner_image_details)){
 						echo "<img src='". esc_url($banner_image_details[0])."'>";
-					}
-					else{
-						printf( '<img src="%s" class="img-fluid" alt="%s">', esc_url( get_theme_file_uri('/images/page-header-about.svg') ), get_bloginfo() );
-						
-					}
+	
 				?>
 		
 			</div>
@@ -41,11 +36,12 @@ get_header();
 
 			<section class="company-info">
 				<div class="container">
+					<?php $info = get_field('info') ;?>
 					<div class="row align-items-center">
 						<div class="col-lg-6 col-md-12">
 							<div class="media radius">
 								<?php
-								$info_image = get_field('info_image');
+								$info_image = $info['image'];
 								$info_image_details = wp_get_attachment_image_src($info_image, 'large');
 								echo "<img src='". esc_url($info_image_details[0])."'>";
 								?>		
@@ -55,11 +51,11 @@ get_header();
 						<div class="col-lg-6 col-md-12">
 							<div class="content">
 								<div class="entry-title">
-									<h4 class="sub-title"><?php echo the_field('info_subtitle')?></h4>
-									<h1 class="title"><?php echo the_field('info_title')?></h1>
+									<h4 class="sub-title"><?php echo esc_html($info['title'])?></h4>
+									<h1 class="title"><?php echo esc_html($info['subtitle'])?></h1>
 								</div>
 
-								<p><?php echo the_field('info_content')?></p>
+								<p><?php echo esc_html($info['content'])?></p>
 							</div>
 						</div>
 					</div>
@@ -76,26 +72,28 @@ get_header();
 
 			<section class="meet-founder">
 				<div class="container">
+					<?php $founder = get_field('founder'); ?>
 					<div class="row flex-row-reverse align-items-center">
 						<div class="col-lg-5 col-md-12">
 							<div class="media with-note radius">
 							<?php
-								$founder_image = get_field('founder_image');
+								$founder_image = $founder['image'];
+
 								$founder_image_details = wp_get_attachment_image_src($founder_image, 'large');
 								echo "<img src='". esc_url($founder_image_details[0])."'>";
 							?>
-								<h5 class="note"><?php echo the_field('founder_name_title')?> <span><?php echo the_field('founder_name')?></span></h5>
+								<h5 class="note"><?php echo esc_html($founder['name'])?> <span><?php echo esc_html($founder['feature_title'])?></span></h5>
 							</div>
 						</div>
 
 						<div class="col-lg-7 col-md-12">
 							<div class="content">
 								<div class="entry-title">
-									<h4 class="sub-title"><?php echo the_field('founder_name')?></h4>
-									<h1 class="title"><?php echo the_field('founder_title')?></h1>
+									<h4 class="sub-title"><?php echo esc_html($founder['name'])?></h4>
+									<h1 class="title"><?php echo esc_html($founder['title'])?></h1>
 								</div>
 
-								<p><?php echo the_field('founder_content')?></p>
+								<p><?php echo esc_html($founder['content'])?></p>
 							</div>
 						</div>
 					</div>

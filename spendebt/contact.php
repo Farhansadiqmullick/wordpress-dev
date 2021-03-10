@@ -5,14 +5,7 @@
 
 get_header();?>
 
-<?php
-global $spendebt_section_id;
-$spendent_section = get_post($spendebt_section_id);
-$spendent_section_title = $spendent_section->post_title;
-$spendent_section_description = $spendent_section->post_description;
-
-
-?>
+<?php $co_banner = get_field('banner')?>
 
 	<div class="header_gutter"></div>
 
@@ -21,7 +14,7 @@ $spendent_section_description = $spendent_section->post_description;
 				<div class="row">
 					<div class="col-12">
 						<div class="entry-title">
-							<h1 class="title"><span><?php the_field('banner_title');?></h1>
+							<h1 class="title"><span><?php echo esc_html($co_banner['title']);?></span></h1>
 						</div>
 					</div>
 				</div>
@@ -29,7 +22,7 @@ $spendent_section_description = $spendent_section->post_description;
 
 			<div class="background rellax">
                 <?php
-                 $contact_image = get_field('banner_image');
+                 $contact_image = $co_banner['image'];
                     $contact_image_details = wp_get_attachment_image_src($contact_image, 'large');
                     echo "<img src='". esc_url($contact_image_details[0])."'>";
                 ?>
@@ -40,15 +33,16 @@ $spendent_section_description = $spendent_section->post_description;
 
 			<section class="contact-page">
 				<div class="container">
-					<div class="row align-items-center">
+					<?php $message = get_field('message');?>
+					<div class="row">
 						<div class="col-md-6 col-sm-12">
 							<div class="content">
 								<div class="entry-title">
-									<h4 class="sub-title"><?php the_field('message_subtitle');?></h4>
-									<h1 class="title"><?php the_field('message_title');?></h1>
+									<h4 class="sub-title"><?php echo esc_html($message['title']);?></h4>
+									<h1 class="title"><?php echo esc_html($message['subtitle']);?></h1>
 								</div>
 
-								<p><?php the_field('message_content');?></a></p>
+								<p><?php echo esc_html($message['content']);?></p>
 
 								<?php if(is_active_sidebar('contact-widget')){
 								dynamic_sidebar('contact-widget');
@@ -86,8 +80,10 @@ $spendent_section_description = $spendent_section->post_description;
 										</form>
 
 										<?php
-											$form = get_field('form');
-											var_dump($form);
+											$form = get_field('form', 'option');
+											
+
+										
 											if ( !empty( $form ) && array_filter( $form ) ): ?>
 												<div class="text=-center">
 											<div class="col-8">
@@ -117,10 +113,6 @@ $spendent_section_description = $spendent_section->post_description;
 											</div>
 											<?php endif; ?>
 
-
-
-
-
 									</div>
 								</div>
 							</div>
@@ -140,16 +132,25 @@ $spendent_section_description = $spendent_section->post_description;
 			<section class="call-action">
 				<div class="container">
 					<div class="row">
+						<?php $action = get_field('action');?>
 						<div class="col-12">
-							<?php $call = get_field('call_action_image');
-							if( !empty( $call ) ): ?>
+							<?php $call = $action['image']; ?>
 								
-								<div class="content coverbg" style="background-image: url(<?php echo esc_url($call['url']); ?>)">
-								<div class="entry-title">
-									<h2 class="title white"><?php the_field('call_action_text')?></h2>
-								</div>
-
-								<a href="<?php echo get_field('call_button')?>" class="btn btn-primary"><?php _e('Sign Up', 'spendebt')?></a>
+								<div class="content coverbg" style="background-image: url(<?php echo esc_url($call['url'])  ? ( $call['url'] ) : get_theme_file_uri( 'images/video-overview.jpg' );?>)">
+									<div class="entry-title">
+										<h2 class="title white"><?php echo esc_html($action['text'])?></h2>
+									</div>
+								<?php
+									$link = $action['button'];
+									if( $link ): 
+										$link_url = $link['url'];
+										$link_title = $link['title'];
+										$link_target = $link['target'] ? $link['target'] : '_self';
+										?>
+										<a class="btn btn-primary" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo esc_html( $link_title ); ?></a>
+								
+								
+								
 								</div>
 							<?php endif; ?>
 						</div>
