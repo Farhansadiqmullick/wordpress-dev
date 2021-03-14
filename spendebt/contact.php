@@ -52,45 +52,25 @@ get_header();?>
 						</div>
 
 						<div class="col-md-6 col-sm-12">
-							<div class="contact-form">
-								<h5 class="title "><?php _e('We look forward to hearing from you','spendebt')?></h5>
+							
+							
+								<h5 class="title"><?php _e('We look Forward To Hearing From You', 'spendebt')?></h5>
+								
+													
+									<?php
+											$form = get_field('form');
+											$forms = $form['embed_code'];
 
-								<div class="">
-									<div class="">
-										<form action="#">
-											<?php wp_nonce_field( 'contact', 'contact')?>
-
-											<label for="firstname"></label>
-											<input type="text" id="fname" name="fname" placeholder="Your name..">
-
-											<label for="lastname"></label>
-											<input type="text" id="lname" name="lname" placeholder="Your last name..">
-
-											<label for="email"></label>
-											<input type="email" id="email" name="email" placeholder="Email number">
-
-											<label for="subject"></label>
-											<text id="subject" name="subject" placeholder="Enter Subject"></text>
-
-											<label for="message"></label>
-											<textarea id="message" name="message" placeholder="Write something.."></textarea>
-
-											<input type="submit" id="send-message" class="btn animated fadeInLeft delay-1s" name="submit" value="Submit">
-
-										</form>
-
-										<?php
-											$form = get_field('form', 'option');
+											if ( $form['type'] == 'embed' && $form['embed_code'] ) 
+															{
+																printf('<div class="embed_code">%s</div>', $form['embed_code']);
+															}
+											echo $forms;
 											
-
-										
-											if ( !empty( $form ) && array_filter( $form ) ): ?>
-												<div class="text=-center">
-											<div class="col-8">
-													<?php
+											if ( !empty( $form ) && array_filter( $form ) ):
 														if ( $form ) 
 														{
-															printf( '<h5 class="title text-uppercase">%s</h5>', $form['title'] );
+															//printf( '<h5 class="title text-uppercase">%s</h5>', $form['title'] );
 														}
 						
 														if ( $form['type'] ) 
@@ -109,15 +89,11 @@ get_header();?>
 															echo '</div>';
 														}
 													?>
+												
+												<?php endif; ?>
+											
 												</div>
-											</div>
-											<?php endif; ?>
-
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</section><!-- /contact-page -->
 

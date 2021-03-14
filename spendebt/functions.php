@@ -1,5 +1,5 @@
 <?php
-show_admin_bar( false );
+ show_admin_bar( false );
 
 require_once('wp_bootstrap_navwalker.php');
 require_once('widget/social-icons-widget.php');

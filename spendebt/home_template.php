@@ -79,10 +79,11 @@ get_header();?>
 								</div>
 								<?php
 								 $video = $works['video'];
+								 $vid_url = $video['link']
 								 
 								 //var_dump($video);?>
 								<div class="media with-note radius">
-									<a href="<?php echo esc_attr( $video['link'] ) ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
+									<a href="<?php echo esc_attr( $vid_url['url'] ) ?>" class="popup-video" data-effect="mfp-move-from-top vertical-middle">
 									<?php
 										$works_image = $works['image'];
 										$works_image_details = wp_get_attachment_image_src($works_image, 'large');

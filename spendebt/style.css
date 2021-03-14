@@ -4766,3 +4766,29 @@ MEDIA QUERIES
     max-width: 80%;
   }
 }
+
+
+/****************
+Gravity Form Styles
+************/
+
+
+
+
+
+.gform_footer{
+  color: #FFF;
+  font-weight: 900;
+  overflow: hidden;
+  background: #000;
+  border-radius: 500px;
+  padding: 10.4px 19.73px;
+}
+.top_label{
+  color: #FFF;
+  font-weight: 900;
+  overflow: hidden;
+  background: #ffffff;;
+  border-radius: 500px;
+  padding: 10.4px 19.73px;
+}

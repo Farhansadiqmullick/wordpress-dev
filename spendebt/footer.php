@@ -50,23 +50,7 @@
 										</h4>
 							</ul>
 								<?php endif; ?>
-									<!-- <form text-center action="#">
-										<span style="background-color:white">
-											<input type="text"class="col-sm-2" placeholder="First Name" name="fname" required>
-											<input type="text"class="col-sm-4" placeholder="Email address" name="mail" required>
-											
-										</span>
-
-										<span class="col-sm-2">
-											<input type="submit" class="btn animated fadeInLeft delay-1s" value="Subscribe">
-										</span>
-									</form> -->
-
-
-
-
-								
-								
+							
 								
 								<?php
 
@@ -75,8 +59,9 @@
 
 								
 								if ( !empty( $form ) && array_filter( $form ) ): ?>
-						<div class="col-lg-4 col-md-12">
-							<div class="why-choose__form">
+						<div class="col-12">
+							<div class="text-center">
+						
 							<?php
 								if ( $form ) 
 								{
@@ -99,6 +84,7 @@
 	                    			echo '</div>';
 	                    		}
 							?>
+							
 							</div>
 						</div>
 						<?php endif; ?>

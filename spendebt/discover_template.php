@@ -61,21 +61,22 @@ Template Name: Discover
                 <?php
                 if( have_rows('how_works_repeater') ):
                     while( have_rows('how_works_repeater') ) : the_row();
+					 ?>
                         
-                        ?>
 
                     <div class="work-steps">
                         <div class="container">
                                 <div class="row align-items-center">
+								
                                     <div class="col-sm-8">
 									
-										<div class="content" data-number="<?php for ($i = 0; $i<3; $i++) ?>
-										<?php echo $i; ?>">
+										<div class="content" data-number="<?php echo ++$i;?>" >
+									
                                             <div class="icon float-left">
                                                 <i class="icon-edit"></i>
-                                                <span class="number"><?php for($i=1; $i<4; $i++) {echo $i;} ;?></span>
+                                                <span class="number"><?php echo $i;?></span>
                                             </div>
-
+				
                                             <div class="text">
                                                 <h2 class="title"><?php the_sub_field('how_works_title_repeater');?></h2>
                                                 <p><?php the_sub_field('how_works_content_repeater');?></p>
@@ -87,7 +88,8 @@ Template Name: Discover
                                                         $how_works_button_title = $how_works_button['title'];
                                                         $how_works_button_target = $how_works_button['target'] ? $how_works_button['target'] : '_blank';
                                                     endif;
-                                                    ?>
+												   
+												  ?>
                                                 <a class="btn" href="<?php echo esc_url( $how_works_button_url ); ?>" target="<?php echo esc_attr( $how_works_button_target ); ?>"><?php echo esc_html( $how_works_button_title ); ?> </a>
                                                 </div>
                                         </div>
